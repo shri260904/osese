@@ -1,0 +1,71 @@
+#include<stdio.h>
+struct process{
+int pid,at,bt;
+};
+
+int main(){
+struct process p[10];
+int i,j,n,ct[10],wt[10],tat[10];
+float awt =0,atat=0;
+
+ printf("enter the no of processes: ");
+ scanf("%d", &n);
+
+ for(i=0;i<n;i++){
+        p[i].pid= i+1;
+    printf("enter the at for P%d: ", i+1);
+    scanf("%d", &p[i].at);
+    printf("enter the bt for P%d: ", i+1);
+    scanf("%d", &p[i].bt);
+ }
+//sort for at
+for(i=0;i<n;i++){
+    for(j=0;j<n-i-1;j++){
+        if(p[j].at>p[j+1].at){
+            struct process temp= p[j];
+            p[j]=p[j+1];
+            p[j+1]=temp;
+        }
+        else if(p[j].at==p[j+1].at){
+                if(p[j].bt>p[j+1].bt){
+                    struct process temp1= p[j];
+                    p[j]=p[j+1];
+                   p[j+1]=temp1;
+                }
+        }
+    }
+ }
+
+
+ct[0] =p[0].at + p[0].bt;
+tat[0]=ct[0] -p[0].at;
+wt[0]=tat[0]-p[0].bt;
+//sort for bt
+for(i=1;i<n;i++){
+    for(j=1;j<n-i-1;j++){
+     if(p[i].at<=ct[0]){
+        if(p[j].bt>p[j+1].bt){
+            struct process temp= p[j];
+            p[j]=p[j+1];
+            p[j+1]=temp;
+        }
+     }
+
+    }
+   ct[i]=ct[i-1]+ p[i].bt;
+   tat[i]=ct[i]- p[i].at;
+   wt[i]=tat[i]-p[i].bt;
+ }
+
+printf("\n Pid\t at\t bt\t ct\t tat\t wt\t\n");
+for(int i=0; i<n; i++){
+    printf("\n %d\t %d\t %d\t %d\t %d\t %d\t\n", p[i].pid, p[i].at, p[i].bt, ct[i], tat[i], wt[i]);
+    awt+=wt[i];
+    atat+=tat[i];
+
+}
+printf("\n awt= %f \n atat= %f\n", awt/n, atat/n);
+
+return 0;
+}
+
